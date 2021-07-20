@@ -7,7 +7,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 import numpy as np
 import h5py
 import time
-from formfactor import formfactor_pt, formfactor_cube
 
 from scipy.ndimage import rotate
 from scipy.spatial.transform import Rotation as R
@@ -31,9 +30,7 @@ class Gui(Frame):
     
     def __init__(self):
         super().__init__()
-
         self.initUI()
-
 
     def initUI(self):
 
@@ -55,6 +52,7 @@ class Gui(Frame):
         # frame 11: not used
 
         ##### 00 #####
+        # frame 00, upper left
         
         frame00 = Frame(self)#, background="#cccccc")
         frame00.place(x=5, y=0)#, height=HEIGHT//2, width=WIDTH//2)
@@ -65,7 +63,6 @@ class Gui(Frame):
         # row 0: load file area
         self.filename_entry = Entry(frame00)
         self.filename_entry.grid(row=0, column=1, columnspan=3)
-        
         self.filename_entry.insert(0, '/Users/admin/data/20_Pt_tf/reconstruction/pt_sofq_m1_sa_ip.h5')
         
         loadbutton = Button(frame00, text="load", command=lambda: self.load_cube())
@@ -179,15 +176,9 @@ class Gui(Frame):
         fft = Radiobutton(frame00, text="real space", variable=self.space, value=1,
                           command=lambda: self.fft())
         fft.grid(row=12, column=0, columnspan=2, sticky=W)
-        # test = Button(frame00, text="test",
-        #               command=lambda: self.test())
-        # test.grid(row=13, column=0)
-        # test2 = Button(frame00, text="test2",
-        #               command=lambda: self.test2())
-        # test2.grid(row=14, column=0)
         
         ##### 01 #####
-        
+        # frame 01, upper right
         self.frame01 = Frame(self, bg="#cccccc")
         self.frame01.place(x=400, y=0)#, height=HEIGHT//2, width=WIDTH//2)
         
@@ -208,7 +199,7 @@ class Gui(Frame):
         self.frame01_toolbar.grid(row=2, column=0)
         
         ##### 10 #####
-        
+        # frame 10, lower left
         frame10 = Frame(self)
         frame10.place(x=5, y=HEIGHT-30)#, height=HEIGHT//2, width=WIDTH//2)
         quit = Button(frame10, text="exit",
@@ -216,25 +207,17 @@ class Gui(Frame):
         quit.pack(side=TOP)
         
         ##### 11 #####
-        
+        # frame 00, lower right
+        # no functionality
         frame11 = Frame(self)
         frame11.place(x=WIDTH//2, y=HEIGHT//2)#, height=HEIGHT//2, width=WIDTH//2)
 
-    def test(self):
-        print('hi')
-        fname = '/Users/admin/data/reconstrution/formfactor_pt_squared_401.h5'
-        f = h5py.File(fname, 'r')
-        formfactor_3d = np.array(f['data'])
-        self.cube = self.cube / formfactor_3d * np.max(formfactor_3d)
-        self.plot_plane()
-        print('hi')
-
-    def test2(self):
-        self.cube = self.cube - 1e-3
-        self.plot_plane()
-
     def load_cube(self):
-        
+        """
+        loads 3D array in h5py file format fromthe filename input panel
+        3D array is expected to be a reconstructed reciprocal scattering volume
+        when executed, one slide perpendicular to the selected axis will be plotted in the plot panel
+        """
         # if self.loaded:
         #     f.close()
         filename = self.filename_entry.get()
@@ -254,19 +237,6 @@ class Gui(Frame):
                        command=lambda l: self.multiple_funcs(self.plot_plane(),
                                                              self.intensity_upd_local()))
         self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=N + E + S + W)
-
-
-        # ### make it spherical
-        # # x, y, z = self.cube.shape
-        # sphere = np.ones((301, 301, 301))
-        # qmax = 94
-        # r2 = qmax**2
-        # for x in range(301):
-        #     for y in range(301):
-        #         for z in range(301):
-        #             if (x-150)**2 + (y-150)**2 + (z-150)**2 >= r2:
-        #                 sphere[x][y][z] = 0.0
-        # self.cube = self.cube * sphere
         
         if not self.loaded:
 
@@ -286,7 +256,6 @@ class Gui(Frame):
             else:
                 raise ValueError("axis must be 0,1,2")
             axs = plt.gca()
-            #plotauis
             if appearance == 'casual':
                 plt.colorbar(shrink=0.81)
                 ax.set_xlabel('pixel')
@@ -312,7 +281,6 @@ class Gui(Frame):
             self.toolbar.update()
             self.canvas.draw()
             self.canvas.get_tk_widget().pack(side=LEFT, fill=BOTH, expand=1)
-            
             self.loaded = True
         
         else:
@@ -326,7 +294,9 @@ class Gui(Frame):
         self.intensity_upd_global()
     
     def plot_plane(self):
-
+        """
+        update plotted plane perpendicular to the selected axis
+        """
         if self.axis.get()==0:
             self.im.set_data(self.cube[self.plane_num.get(),:,:])
         elif self.axis.get()==1:
@@ -335,10 +305,10 @@ class Gui(Frame):
             self.im.set_data(self.cube[:,:,self.plane_num.get()])
         else:
             raise ValueError("axis must be 0,1,2")
-        
         self.canvas.draw()
 
     def colorrange_upd(self):
+        """change color range in plot"""
         try:
             if self.colorbarmin.get() and self.colorbarmax.get():
                 vmin = float(self.colorbarmin.get())
@@ -358,7 +328,7 @@ class Gui(Frame):
         self.plot_plane()
     
     def intensity_upd_local(self):
-        
+        """show local intensity minimum, maximum and sum of current plotted plane"""
         if self.axis.get()==0:
             plane = self.cube[self.plane_num.get(),:,:]
         elif self.axis.get()==1:
@@ -372,9 +342,8 @@ class Gui(Frame):
         self.localnanratio['text'] = "{}".format(round(nan_ratio, 2))
 
     def intensity_upd_global(self):
-        
+        """show global intensity minimum, maximum and sum of 3D array"""
         self.intensity_upd_local()
-        
         nan_ratio = np.count_nonzero(np.isnan(self.cube)) / self.cube.size
         self.globalmax['text'] = "{}".format(np.format_float_scientific(np.nanmax(self.cube), 1))
         self.globalmin['text'] = "{}".format(np.format_float_scientific(np.nanmin(self.cube), 1))
@@ -382,7 +351,10 @@ class Gui(Frame):
         self.globalnanratio['text'] = "{}".format(round(nan_ratio, 2))
     
     def fft(self):
-
+        """
+        Fourier transform 3D array from reciprocal to real space
+        the origin of reciprocal and real space is expected to be the central voxel
+        """
         def perform_fft(fftholder):
             time0 = time.time()
             fftholder = np.nan_to_num(fftholder)
@@ -436,7 +408,10 @@ class Gui(Frame):
         self.intensity_upd_global()
     
     def ifft(self):
-
+        """
+        Inverse Fourier transform 3D array from real to reciprocal space
+        the origin of real and reciprocal space is expected to be the central voxel
+        """
         if not self.cutoff.get():
             self.cube_real = self.cube
             self.cube = self.cube_reci
@@ -450,8 +425,12 @@ class Gui(Frame):
         self.intensity_upd_global()
 
     def applycutoff(self):
-        # bisquitfactory
-
+        """
+        reassign all voxels with distance smaller than qmin and greater than qmax
+        from the central voxel to 0.0
+        qmin, qmax is loaded from the qmin, qmax input panel
+        currently opperates in units of pixels
+        """
         # if not self.cutted:
         #     time.sleep(0.5)
         #     self.cutoff.set(0)
@@ -462,23 +441,16 @@ class Gui(Frame):
             sphere = np.ones((X, Y, Z))
             qmin = float(self.qminentry.get())
             qmax = float(self.qmaxentry.get())
-            # qmin umrechnen zu px
-            # qmax umrechnen zu px
+            # convert qmin to pixels
+            # convert qmax to pixels
             r2_inner = qmin**2
             r2_outer = qmax**2
             XS, YS, ZS = np.meshgrid(np.arange(X), np.arange(Y), np.arange(Z))
             R2 = (XS - X // 2) ** 2 + (YS - Y // 2) ** 2 + (ZS - Z // 2) ** 2
             mask = (R2 <= r2_inner) | (R2 >= r2_outer)
             sphere[mask] = np.nan
-            # for x in range(X):
-            #     for y in range(Y):
-            #         for z in range(Z):
-            #             r2 = (x-X//2)**2 + (y-Y//2)**2 + (z-Z//2)**2
-            #             if r2 <= r2_inner or r2 >= r2_outer:
-            #                 sphere[x][y][z] = np.nan
             cutdur = time.time() - time0
 
-            # if self.transformed:
             if self.space.get():
                 self.cube_real = self.cube
                 self.cube = self.cube_reci * sphere
@@ -504,7 +476,7 @@ class Gui(Frame):
             self.intensity_upd_global()
 
     def redocutuff(self):
-        if self.space.get(): # we in real space
+        if self.space.get(): # in real space
             self.cube_realcut = self.cube
             if not self.transformed:
                 self.fft()
@@ -535,6 +507,9 @@ class Gui(Frame):
         self.plot_plane()
     
     def animation(self):
+        """
+        slices through the 3D array along the selcted axis 
+        """
         try:
             if not self.anientry.get():
                 anispeed = 1
