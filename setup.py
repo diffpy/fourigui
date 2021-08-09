@@ -82,7 +82,7 @@ def getversioncfg():
 
 versiondata = getversioncfg()
 
-with open(os.path.join(MYDIR, 'README.txt')) as fp:
+with open(os.path.join(MYDIR, 'README.rst')) as fp:
     long_description = fp.read()
 
 
@@ -101,7 +101,7 @@ def datafiles_examples():
 
 # define distribution
 setup_args = dict(
-    name = 'diffpy.'{{cookiecutter.package_name}}'',
+    name = 'diffpy.fourigui',
     version = versiondata.get('DEFAULT', 'version'),
     packages = find_packages(os.path.join(MYDIR, 'src')),
     package_dir = {'' : 'src'},
@@ -111,7 +111,7 @@ setup_args = dict(
     entry_points = {
         # define console_scripts here, see setuptools docs for details.
         'console_scripts' : [
-            'fourigui' = 'diffpy.fourigui:main',
+            'fourigui=diffpy.fourigui:main',
         ],
     },
     author = 'Simon J.L. Billinge',
