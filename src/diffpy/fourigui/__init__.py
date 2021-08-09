@@ -12,9 +12,9 @@
 # See LICENSENOTICE.txt for license information.
 #
 ##############################################################################
-
+#TODO add description
 """\
 '{{cookiecutter.short_description}}'
 """
 # package version
-from diffpy.{{cookiecutter.package_name}}.version import __version__
+from diffpy.fourigui.version import __version__
