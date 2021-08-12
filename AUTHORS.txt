@@ -1,0 +1,22 @@
+The main contributors to the diffpy.pdfgui software are:
+
+    Sani Harouna-Mayer
+
+This project was much improved by testing, feedback and suggestions
+from the Billinge-group members at the Applied Physics and Applied
+Mathematics Department of the Columbia University in New York and
+at the Condensed Matter Physics and Materials Science Department
+at the Brookhaven National Laboratory.
+
+The current and past members of the team are
+
+    Simon Billinge
+    Milinda Abeykoon
+    Emil Bozin
+    Kevin Knox
+    Chenyang Shi
+    Long Yang
+    Xiaohao Yang
+    Sani Harouna-Mayer
+
+For more information about diffpy.pdfgui email sb2896@columbia.edu.
