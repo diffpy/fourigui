@@ -2,9 +2,11 @@
 diffpy.fourigui
 ========================================================================
 #TODO insert desciptions
-{{cookiecutter.short_description}}
+{{Fourigui is an interactive visualization tool with an embedded Fourier transformation functionality, designed to process 3D reciprocal space scattering volumes to 3D atomic pair distribution functions (3D PDFs).}}
 
-{{cookiecutter.long_description}}
+{{Fourigui is a tool to visualize and process 3D data sets written with the python programming language. Fourigui always displays one slice perpendicular to one axis and allows scrolling through the 3D data set along the given axis with a slider. It shows feedback values such as global and local maxima, minima or NAN ratios. The matplotlib panel e.g. for zooming and saving figures is featured.
+Fourigui is designed for the processing of 3D atomic pair distribution functions (PDFs). One can load a 3D reciprocal space scattering volume which can be Fourier transformed to the 3D PDF. Thereby, one can apply cut off frequencies beyond and below given Q values, compare the results and switch between the scattering volume in reciprocal space and 3D PDF in real space.
+}}
 #TODO add docs to website?
 To learn more about diffpy.{{cookiecutter.package_name}} library see the
 user manual at http://diffpy.github.io/diffpy.{{cookiecutter.package_name}}.
