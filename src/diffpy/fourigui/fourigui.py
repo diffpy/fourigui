@@ -11,20 +11,10 @@ import time
 from scipy.ndimage import rotate
 from scipy.spatial.transform import Rotation as R
 
-appearance = 'casual'
-#appearance = 'fancy'
-
-if appearance == 'casual':
-    WIDTH = 920
-    HEIGHT = 630
-    XPOS = 300
-    YPOS = 100
-elif appearance == 'fancy':
-    WIDTH = 1122
-    HEIGHT = 630
-    XPOS = 200
-    YPOS = 100
-
+WIDTH = 920
+HEIGHT = 630
+XPOS = 300
+YPOS = 100
 
 class Gui(Frame):
     
@@ -63,7 +53,7 @@ class Gui(Frame):
         # row 0: load file area
         self.filename_entry = Entry(frame00)
         self.filename_entry.grid(row=0, column=1, columnspan=3)
-        self.filename_entry.insert(0, '/Users/admin/data/20_Pt_tf/reconstruction/pt_sofq_m1_sa_ip.h5')
+        # self.filename_entry.insert(0, '/Users/admin/data/20_Pt_tf/reconstruction/pt_sofq_m1_sa_ip.h5')
         
         loadbutton = Button(frame00, text="load", command=lambda: self.load_cube())
         loadbutton.grid(row=0, column=4)
