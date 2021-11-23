@@ -53,7 +53,7 @@ class Gui(Frame):
         # row 0: load file area
         self.filename_entry = Entry(frame00)
         self.filename_entry.grid(row=0, column=1, columnspan=3)
-        # self.filename_entry.insert(0, '/Users/admin/data/20_Pt_tf/reconstruction/pt_sofq_m1_sa_ip.h5')
+        self.filename_entry.insert(0, '/path/data.h5')
         
         loadbutton = Button(frame00, text="load", command=lambda: self.load_cube())
         loadbutton.grid(row=0, column=4)
@@ -139,9 +139,9 @@ class Gui(Frame):
         seperator.grid(row=9, column=0, columnspan=5)
         cutofflabel = Label(frame00, text="cutoff frequency")
         cutofflabel.grid(row=10, column=2, columnspan=2)
-        qminlabel = Label(frame00, text="qmin:")
+        qminlabel = Label(frame00, text="qmin [px]:")
         qminlabel.grid(row=11, column=2, sticky=E)
-        qmaxlabel = Label(frame00, text="qmax:")
+        qmaxlabel = Label(frame00, text="qmax [px]:")
         qmaxlabel.grid(row=12, column=2, sticky=E)
         self.qminentry = Entry(frame00, width=7)
         self.qminentry.grid(row=11, column=3)
