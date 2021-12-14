@@ -24,10 +24,10 @@ class Gui(Frame):
 
     def initUI(self):
 
-        self.loaded = False
-        self.transformed = False
-        self.cutted = False
-        self.transcutted = False
+        self.loaded = False # denotes whether a dataset is loaded
+        self.transformed = False # denotes whether dataset is Fourier transformed
+        self.cutted = False # denotes whether cutoff frequencies are applied to dataset
+        self.transcutted = False # denotes whether cutoff frequencies are applied and Fourier transformed
         
         self.master.title("FouriGUI")
         self.pack(fill=BOTH, expand=True)
@@ -44,8 +44,8 @@ class Gui(Frame):
         ##### 00 #####
         # frame 00, upper left
         
-        frame00 = Frame(self)#, background="#cccccc")
-        frame00.place(x=5, y=0)#, height=HEIGHT//2, width=WIDTH//2)
+        frame00 = Frame(self)
+        frame00.place(x=5, y=0)
         
         filelabel = Label(frame00, text="filename: ")
         filelabel.grid(row=0, column=0)
@@ -204,12 +204,11 @@ class Gui(Frame):
 
     def load_cube(self):
         """
-        loads 3D array in h5py file format fromthe filename input panel
+        loads 3D array in h5py file format from the filename input panel
         3D array is expected to be a reconstructed reciprocal scattering volume
         when executed, one slide perpendicular to the selected axis will be plotted in the plot panel
         """
-        # if self.loaded:
-        #     f.close()
+
         filename = self.filename_entry.get()
         f = h5py.File(filename, 'r')
         try:
@@ -218,7 +217,8 @@ class Gui(Frame):
             elif 'rebinned_data' in f.keys():
                 self.cube = np.array(f['rebinned_data'])
         except:
-            raise KeyError('- No data found in ' + filename + ' :( ...')
+            raise KeyError('- No data found in ' + filename + ' :( ...'
+                           + '\nchange to alternative keys: ' + str(list(f.keys())))
         print("- file loaded: {}".format(filename))
 
         self.slider.destroy()
@@ -270,9 +270,7 @@ class Gui(Frame):
         self.intensity_upd_global()
     
     def plot_plane(self):
-        """
-        update plotted plane perpendicular to the selected axis
-        """
+        """update plotted plane perpendicular to the selected axis"""
         if self.axis.get()==0:
             self.im.set_data(self.cube[self.plane_num.get(),:,:])
         elif self.axis.get()==1:
@@ -407,11 +405,8 @@ class Gui(Frame):
         qmin, qmax is loaded from the qmin, qmax input panel
         currently opperates in units of pixels
         """
-        # if not self.cutted:
-        #     time.sleep(0.5)
-        #     self.cutoff.set(0)
         if not self.cutted:
-
+            
             time0 = time.time()
             X, Y, Z = self.cube.shape
             sphere = np.ones((X, Y, Z))
