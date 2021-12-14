@@ -218,7 +218,7 @@ class Gui(Frame):
                 self.cube = np.array(f['rebinned_data'])
         except:
             raise KeyError('- No data found in ' + filename + ' :( ...'
-                           + '\nchange to alternative keys: ' + str(list(my_dict.keys())))
+                           + '\nchange to alternative keys: ' + str(list(f.keys())))
         print("- file loaded: {}".format(filename))
 
         self.slider.destroy()
