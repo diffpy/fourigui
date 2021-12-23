@@ -1,1 +1,8 @@
 # List required packages in this file, one per line.
+
+Package                   Version
+========================= ===========
+tk                        8.6.11
+matplotlib                3.4.3
+numpy                     1.19.1
+h5py                      2.10.0
