@@ -8,8 +8,6 @@ import numpy as np
 import h5py
 import time
 
-from scipy.ndimage import rotate
-from scipy.spatial.transform import Rotation as R
 
 WIDTH = 920
 HEIGHT = 630
