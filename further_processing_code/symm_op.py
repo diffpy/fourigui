@@ -1,15 +1,15 @@
-#symmetrization code
+# symmetrization code
 #
-#contact: Sani Harouna-Mayer
-#mail: sani.harouna-mayer@uni-hamburg.de
+# contact: Sani Harouna-Mayer
+# mail: sani.harouna-mayer@uni-hamburg.de
 #
 #
-#this code is derived for a 111 fiber textured fcc structure 3D scattering volume and needs to adapted for
-#different texture geometries and different structures
+# this code is derived for a 111 fiber textured fcc structure 3D scattering volume and needs to adapted for
+# different texture geometries and different structures
 #
-#for different fiber texture orientations one can easily change the orientation in line 55 and 73
-#for different cubic structures one can easily change the symmetry operation parameters in line 106
-#more complex textures or crystal strucutes require more effort to derive appropriate symmetry operations
+# for different fiber texture orientations one can easily change the orientation in line 55 and 73
+# for different cubic structures one can easily change the symmetry operation parameters in line 106
+# more complex textures or crystal strucutes require more effort to derive appropriate symmetry operations
 
 import numpy as np
 import h5py
@@ -19,8 +19,8 @@ from time import time
 
 def load_data(fname):
     """Load data from fname in h5 datatype"""
-    f = h5py.File(fname, 'r')
-    data = np.array(f['data'])
+    f = h5py.File(fname, "r")
+    data = np.array(f["data"])
     f.close()
     print("loaded: " + fname)
     return data
@@ -28,8 +28,8 @@ def load_data(fname):
 
 def save_data(fname, arr):
     """Save data arr as fname in h5 datatype"""
-    f = h5py.File(fname, 'w')
-    f['data'] = arr
+    f = h5py.File(fname, "w")
+    f["data"] = arr
     f.close()
     print("saved: " + fname)
     return
@@ -49,28 +49,52 @@ def symm_op(arr, angle, inversion):
     """
 
     if inversion:
-        arr = np.flip(arr) #inverts array arr about the center voxel
+        arr = np.flip(arr)  # inverts array arr about the center voxel
 
     if angle:
-        arr = np.rot90(arr, k=1, axes=(0, 2)) #rotate arr 90° about axes (0,2) to easily perform rotation about z below
+        arr = np.rot90(
+            arr, k=1, axes=(0, 2)
+        )  # rotate arr 90° about axes (0,2) to easily perform rotation about z below
 
         isnanarr_so = []
         arr_so = []
         isnanarr = np.isnan(arr)
-        arr = np.nan_to_num(arr) #scipy.ndimage.rotate cannot operate nan values, thus reasign nan to 0.0
+        arr = np.nan_to_num(
+            arr
+        )  # scipy.ndimage.rotate cannot operate nan values, thus reasign nan to 0.0
 
         for plane in isnanarr:
             isnanarr_so.append(
-                rotate(plane, angle, axes=(1, 0), reshape=False, mode='constant', cval=True, prefilter=True, order=0)
+                rotate(
+                    plane,
+                    angle,
+                    axes=(1, 0),
+                    reshape=False,
+                    mode="constant",
+                    cval=True,
+                    prefilter=True,
+                    order=0,
+                )
             )
 
         for plane in arr:
             arr_so.append(
-                rotate(plane, angle, axes=(1, 0), reshape=False, mode='constant', cval=0.0, prefilter=True, order=0)
+                rotate(
+                    plane,
+                    angle,
+                    axes=(1, 0),
+                    reshape=False,
+                    mode="constant",
+                    cval=0.0,
+                    prefilter=True,
+                    order=0,
+                )
             )
 
         isnanarr_so = np.rot90(isnanarr_so, k=-1, axes=(0, 2))
-        arr_so = np.rot90(arr_so, k=-1, axes=(0, 2)) #rotate arr -90° about axes (0,2) to initial orientation
+        arr_so = np.rot90(
+            arr_so, k=-1, axes=(0, 2)
+        )  # rotate arr -90° about axes (0,2) to initial orientation
 
     else:
         isnanarr_so = np.isnan(arr)
@@ -94,21 +118,23 @@ def main(arr, symm_op_params):
         arr_so, isnanarr_so = symm_op(arr, *symm_op_param)
         holder += arr_so
         bin += isnanarr_so
-        print(round(time()-time0, 2), symm_op_param)
-    bin = bin.astype('float')
-    bin[bin == 0.0] = 'nan'
+        print(round(time() - time0, 2), symm_op_param)
+    bin = bin.astype("float")
+    bin[bin == 0.0] = "nan"
     arr = np.array(holder) / np.array(bin)
     print(round(time() - time0, 2))
     return arr
 
 
-if __name__ == '__main__':
-    symm_op_params = [(False, False), #1
-                      (120, False), #C3
-                      (240, False), #2C3
-                      (False, True), #i
-                      (120, True), #i + C3
-                      (240, True)] #i + 2C3
-    cube = load_data('/path2data/data.h5')
+if __name__ == "__main__":
+    symm_op_params = [
+        (False, False),  # 1
+        (120, False),  # C3
+        (240, False),  # 2C3
+        (False, True),  # i
+        (120, True),  # i + C3
+        (240, True),
+    ]  # i + 2C3
+    cube = load_data("/path2data/data.h5")
     cube = main(cube, symm_op_params)
-    save_data('/path2data/data_sa.h5', cube)
+    save_data("/path2data/data_sa.h5", cube)

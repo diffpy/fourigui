@@ -12,7 +12,7 @@
 # See LICENSENOTICE.txt for license information.
 #
 ##############################################################################
-#TODO add description
+# TODO add description
 """\
 '{{cookiecutter.short_description}}'
 """

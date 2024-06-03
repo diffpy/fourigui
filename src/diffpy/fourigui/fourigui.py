@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.ttk import Button, Style
 import matplotlib
+
 matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
@@ -14,24 +15,27 @@ HEIGHT = 630
 XPOS = 300
 YPOS = 100
 
+
 class Gui(Frame):
-    
+
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
 
-        self.loaded = False # denotes whether a dataset is loaded
-        self.transformed = False # denotes whether dataset is Fourier transformed
-        self.cutted = False # denotes whether cutoff frequencies are applied to dataset
-        self.transcutted = False # denotes whether cutoff frequencies are applied and Fourier transformed
-        
+        self.loaded = False  # denotes whether a dataset is loaded
+        self.transformed = False  # denotes whether dataset is Fourier transformed
+        self.cutted = False  # denotes whether cutoff frequencies are applied to dataset
+        self.transcutted = False  # denotes whether cutoff frequencies are applied and Fourier transformed
+
         self.master.title("FouriGUI")
         self.pack(fill=BOTH, expand=True)
 
         print("\nNew Session started ...")
-        print("Enjoy exploring the beautiful reconstructions in real and in reciprocal space!")
+        print(
+            "Enjoy exploring the beautiful reconstructions in real and in reciprocal space!"
+        )
 
         # 4 frames:
         # frame 00: all buttons
@@ -41,37 +45,52 @@ class Gui(Frame):
 
         ##### 00 #####
         # frame 00, upper left
-        
+
         frame00 = Frame(self)
         frame00.place(x=5, y=0)
-        
+
         filelabel = Label(frame00, text="filename: ")
         filelabel.grid(row=0, column=0)
 
         # row 0: load file area
         self.filename_entry = Entry(frame00)
         self.filename_entry.grid(row=0, column=1, columnspan=3)
-        self.filename_entry.insert(0, '/path/data.h5')
-        
+        self.filename_entry.insert(0, "/path/data.h5")
+
         loadbutton = Button(frame00, text="load", command=lambda: self.load_cube())
         loadbutton.grid(row=0, column=4)
-        
+
         # row 1: change axis area
         axislabel = Label(frame00, text="axis: ")
         axislabel.grid(row=1, column=0, pady=7, sticky=W)
-        
+
         self.axis = IntVar()
-        
-        rb0 = Radiobutton(frame00, text="0", variable=self.axis, value=0,
-                          command=lambda: self.plot_plane())
+
+        rb0 = Radiobutton(
+            frame00,
+            text="0",
+            variable=self.axis,
+            value=0,
+            command=lambda: self.plot_plane(),
+        )
         rb0.grid(row=1, column=1)
-        rb1 = Radiobutton(frame00, text="1", variable=self.axis, value=1,
-                          command=lambda: self.plot_plane())
+        rb1 = Radiobutton(
+            frame00,
+            text="1",
+            variable=self.axis,
+            value=1,
+            command=lambda: self.plot_plane(),
+        )
         rb1.grid(row=1, column=2)
-        rb2 = Radiobutton(frame00, text="2", variable=self.axis, value=2,
-                          command=lambda: self.plot_plane())
+        rb2 = Radiobutton(
+            frame00,
+            text="2",
+            variable=self.axis,
+            value=2,
+            command=lambda: self.plot_plane(),
+        )
         rb2.grid(row=1, column=3)
-        
+
         # row 2-4: intensity specs
         intlabel = Label(frame00, text="intensity:")
         intlabel.grid(row=2, column=0, pady=1, sticky=W)
@@ -108,32 +127,42 @@ class Gui(Frame):
         self.colorbarmax = Entry(frame00, width=7)
         self.colorbarmax.grid(row=3, column=3)
         self.colorbarmin = Entry(frame00, width=7)
-        self.colorbarmin.grid(row=4, column=3) 
-        set_range = Button(frame00, text="set range",
-                           command=lambda: self.colorrange_upd())
+        self.colorbarmin.grid(row=4, column=3)
+        set_range = Button(
+            frame00, text="set range", command=lambda: self.colorrange_upd()
+        )
         set_range.grid(row=2, column=4)
-        toglobalmax = Button(frame00, text="global max",
-                             command=lambda: self.multiple_funcs(self.colorbarmax.delete(0,
-                                            len(self.colorbarmax.get())), self.colorbarmax.insert(0,
-                                               self.globalmax['text'])))
+        toglobalmax = Button(
+            frame00,
+            text="global max",
+            command=lambda: self.multiple_funcs(
+                self.colorbarmax.delete(0, len(self.colorbarmax.get())),
+                self.colorbarmax.insert(0, self.globalmax["text"]),
+            ),
+        )
         toglobalmax.grid(row=3, column=4)
-        toglobalmin = Button(frame00, text="global min",
-                             command=lambda: self.multiple_funcs(self.colorbarmin.delete(0,
-                                            len(self.colorbarmin.get())),self.colorbarmin.insert(0,
-                                               self.globalmin['text'])))
+        toglobalmin = Button(
+            frame00,
+            text="global min",
+            command=lambda: self.multiple_funcs(
+                self.colorbarmin.delete(0, len(self.colorbarmin.get())),
+                self.colorbarmin.insert(0, self.globalmin["text"]),
+            ),
+        )
         toglobalmin.grid(row=4, column=4)
-        
+
         # row 7-8: animation - automatic slicing through the planes
         anilabel = Label(frame00, text="animation speed [ms]")
         anilabel.grid(row=7, column=3, columnspan=2, sticky=W)
         self.anientry = Entry(frame00, width=7)
         self.anientry.grid(row=8, column=3)
-        anibutton = Button(frame00, text="animation", command= lambda: self.animation())
+        anibutton = Button(frame00, text="animation", command=lambda: self.animation())
         anibutton.grid(row=8, column=4)
-        
-        
+
         # row 10-12 Fourier transformation
-        seperator = Label(frame00, text=" ")#__________________________________________________________________")
+        seperator = Label(
+            frame00, text=" "
+        )  # __________________________________________________________________")
         seperator.grid(row=9, column=0, columnspan=5)
         cutofflabel = Label(frame00, text="cutoff frequency")
         cutofflabel.grid(row=10, column=2, columnspan=2)
@@ -146,59 +175,98 @@ class Gui(Frame):
         self.qmaxentry = Entry(frame00, width=7)
         self.qmaxentry.grid(row=12, column=3)
         self.cutoff = IntVar()
-        newcutoffbutton = Button(frame00, text="new cutoff", command = lambda: self.newcutoff())
+        newcutoffbutton = Button(
+            frame00, text="new cutoff", command=lambda: self.newcutoff()
+        )
         newcutoffbutton.grid(row=10, column=4)
-        cutoffon = Radiobutton(frame00, text="on", variable=self.cutoff, value=1,
-                               command=lambda: self.applycutoff())
+        cutoffon = Radiobutton(
+            frame00,
+            text="on",
+            variable=self.cutoff,
+            value=1,
+            command=lambda: self.applycutoff(),
+        )
         cutoffon.grid(row=11, column=4, sticky=W)
-        cutoffoff = Radiobutton(frame00, text="off", variable=self.cutoff, value=0,
-                                command=lambda: self.redocutuff())
+        cutoffoff = Radiobutton(
+            frame00,
+            text="off",
+            variable=self.cutoff,
+            value=0,
+            command=lambda: self.redocutuff(),
+        )
         cutoffoff.grid(row=12, column=4, sticky=W)
 
         spacelabel = Label(frame00, text="Space Selection")
         spacelabel.grid(row=10, column=0, columnspan=2, sticky=W)
         self.space = IntVar()
-        reciprocal = Radiobutton(frame00, text="reciprocal space", variable=self.space, value=0,
-                          command=lambda: self.ifft(), pady=5)
+        reciprocal = Radiobutton(
+            frame00,
+            text="reciprocal space",
+            variable=self.space,
+            value=0,
+            command=lambda: self.ifft(),
+            pady=5,
+        )
         reciprocal.grid(row=11, column=0, columnspan=2, sticky=W)
-        fft = Radiobutton(frame00, text="real space", variable=self.space, value=1,
-                          command=lambda: self.fft())
+        fft = Radiobutton(
+            frame00,
+            text="real space",
+            variable=self.space,
+            value=1,
+            command=lambda: self.fft(),
+        )
         fft.grid(row=12, column=0, columnspan=2, sticky=W)
-        
+
         ##### 01 #####
         # frame 01, upper right
         self.frame01 = Frame(self, bg="#cccccc")
-        self.frame01.place(x=400, y=0)#, height=HEIGHT//2, width=WIDTH//2)
-        
+        self.frame01.place(x=400, y=0)  # , height=HEIGHT//2, width=WIDTH//2)
+
         self.plane_num = IntVar()
-        
-        self.slider = Scale(self.frame01, variable=self.plane_num, from_=0, to=500,
-                       label="slider", orient=HORIZONTAL, length=WIDTH//2,# resolution=-1,
-                       command=lambda l: self.multiple_funcs(self.plot_plane(),
-                                                             self.intensity_upd_local()))
-                       #command=lambda p: self.plot_plane())
-        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=N+E+S+W)
-        
-        
+
+        self.slider = Scale(
+            self.frame01,
+            variable=self.plane_num,
+            from_=0,
+            to=500,
+            label="slider",
+            orient=HORIZONTAL,
+            length=WIDTH // 2,  # resolution=-1,
+            command=lambda l: self.multiple_funcs(
+                self.plot_plane(), self.intensity_upd_local()
+            ),
+        )
+        # command=lambda p: self.plot_plane())
+        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=N + E + S + W)
+
         self.frame01_plotcell = Frame(self.frame01)
-        self.frame01_plotcell.grid(row=1, column=0, padx=10, pady=10, sticky=N+E+S+W)
-        
+        self.frame01_plotcell.grid(
+            row=1, column=0, padx=10, pady=10, sticky=N + E + S + W
+        )
+
         self.frame01_toolbar = Frame(self.frame01)
         self.frame01_toolbar.grid(row=2, column=0)
-        
+
         ##### 10 #####
         # frame 10, lower left
         frame10 = Frame(self)
-        frame10.place(x=5, y=HEIGHT-30)#, height=HEIGHT//2, width=WIDTH//2)
-        quit = Button(frame10, text="exit",
-                      command=lambda: self.multiple_funcs(print("Session ended...\n", self.quit())))
+        frame10.place(x=5, y=HEIGHT - 30)  # , height=HEIGHT//2, width=WIDTH//2)
+        quit = Button(
+            frame10,
+            text="exit",
+            command=lambda: self.multiple_funcs(
+                print("Session ended...\n", self.quit())
+            ),
+        )
         quit.pack(side=TOP)
-        
+
         ##### 11 #####
         # frame 00, lower right
         # no functionality
         frame11 = Frame(self)
-        frame11.place(x=WIDTH//2, y=HEIGHT//2)#, height=HEIGHT//2, width=WIDTH//2)
+        frame11.place(
+            x=WIDTH // 2, y=HEIGHT // 2
+        )  # , height=HEIGHT//2, width=WIDTH//2)
 
     def load_cube(self):
         """
@@ -208,45 +276,58 @@ class Gui(Frame):
         """
 
         filename = self.filename_entry.get()
-        f = h5py.File(filename, 'r')
+        f = h5py.File(filename, "r")
         try:
-            if 'data' in f.keys():
-                self.cube = np.array(f['data'])
-            elif 'rebinned_data' in f.keys():
-                self.cube = np.array(f['rebinned_data'])
+            if "data" in f.keys():
+                self.cube = np.array(f["data"])
+            elif "rebinned_data" in f.keys():
+                self.cube = np.array(f["rebinned_data"])
         except:
-            raise KeyError('- No data found in ' + filename + ' :( ...'
-                           + '\nchange to alternative keys: ' + str(list(f.keys())))
+            raise KeyError(
+                "- No data found in "
+                + filename
+                + " :( ..."
+                + "\nchange to alternative keys: "
+                + str(list(f.keys()))
+            )
         print("- file loaded: {}".format(filename))
 
         self.slider.destroy()
-        self.slider = Scale(self.frame01, variable=self.plane_num, from_=0, to=len(self.cube)-1,
-                       label="slider", orient=HORIZONTAL, length=WIDTH//2,# resolution=-1,
-                       command=lambda l: self.multiple_funcs(self.plot_plane(),
-                                                             self.intensity_upd_local()))
+        self.slider = Scale(
+            self.frame01,
+            variable=self.plane_num,
+            from_=0,
+            to=len(self.cube) - 1,
+            label="slider",
+            orient=HORIZONTAL,
+            length=WIDTH // 2,  # resolution=-1,
+            command=lambda l: self.multiple_funcs(
+                self.plot_plane(), self.intensity_upd_local()
+            ),
+        )
         self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=N + E + S + W)
-        
+
         if not self.loaded:
 
             fig, ax = plt.subplots(figsize=(4.95, 4.95))
             fig = plt.gcf()
             DPI = fig.get_dpi()
             fig.set_size_inches(500 / float(DPI), 500 / float(DPI))
-            
-            self.plane_num.set(np.shape(self.cube)[0]//2)
-            
-            if self.axis.get()==0:
-                self.im = plt.imshow(self.cube[self.plane_num.get(),:,:])
-            elif self.axis.get()==1:
-                self.im = plt.imshow(self.cube[:,self.plane_num.get(),:])
-            elif self.axis.get()==2:
-                self.im = plt.imshow(self.cube[:,:,self.plane_num.get()])
+
+            self.plane_num.set(np.shape(self.cube)[0] // 2)
+
+            if self.axis.get() == 0:
+                self.im = plt.imshow(self.cube[self.plane_num.get(), :, :])
+            elif self.axis.get() == 1:
+                self.im = plt.imshow(self.cube[:, self.plane_num.get(), :])
+            elif self.axis.get() == 2:
+                self.im = plt.imshow(self.cube[:, :, self.plane_num.get()])
             else:
                 raise ValueError("axis must be 0,1,2")
             axs = plt.gca()
             plt.colorbar(shrink=0.81)
-            ax.set_xlabel('pixel')
-            ax.set_ylabel('pixel')
+            ax.set_xlabel("pixel")
+            ax.set_ylabel("pixel")
             self.canvas = FigureCanvasTkAgg(fig, master=self.frame01_plotcell)
             self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame01_toolbar)
             self.toolbar.pack(side=LEFT)
@@ -256,7 +337,7 @@ class Gui(Frame):
             self.canvas.draw()
             self.canvas.get_tk_widget().pack(side=LEFT, fill=BOTH, expand=1)
             self.loaded = True
-        
+
         else:
             self.plot_plane()
             self.transformed = False
@@ -264,17 +345,17 @@ class Gui(Frame):
             self.cutted = False
             self.cutoff.set(0)
             self.space.set(0)
-        
+
         self.intensity_upd_global()
-    
+
     def plot_plane(self):
         """update plotted plane perpendicular to the selected axis"""
-        if self.axis.get()==0:
-            self.im.set_data(self.cube[self.plane_num.get(),:,:])
-        elif self.axis.get()==1:
-            self.im.set_data(self.cube[:,self.plane_num.get(),:])
-        elif self.axis.get()==2:
-            self.im.set_data(self.cube[:,:,self.plane_num.get()])
+        if self.axis.get() == 0:
+            self.im.set_data(self.cube[self.plane_num.get(), :, :])
+        elif self.axis.get() == 1:
+            self.im.set_data(self.cube[:, self.plane_num.get(), :])
+        elif self.axis.get() == 2:
+            self.im.set_data(self.cube[:, :, self.plane_num.get()])
         else:
             raise ValueError("axis must be 0,1,2")
         self.canvas.draw()
@@ -287,46 +368,59 @@ class Gui(Frame):
                 vmax = float(self.colorbarmax.get())
             elif self.colorbarmin.get():
                 vmin = float(self.colorbarmin.get())
-                vmax = self.globalmax['text']
+                vmax = self.globalmax["text"]
             elif self.colorbarmax.get():
-                vmin = self.globalmin['text']
+                vmin = self.globalmin["text"]
                 vmax = float(self.colorbarmax.get())
             else:
-                vmin = self.globalmin['text']
-                vmax = self.globalmax['text']
+                vmin = self.globalmin["text"]
+                vmax = self.globalmax["text"]
         except ValueError:
             print("Oops... colorbar range must be a number or empty string.")
         self.im.set_clim(vmin, vmax)
         self.plot_plane()
-    
+
     def intensity_upd_local(self):
         """show local intensity minimum, maximum and sum of current plotted plane"""
-        if self.axis.get()==0:
-            plane = self.cube[self.plane_num.get(),:,:]
-        elif self.axis.get()==1:
-            plane = self.cube[:,self.plane_num.get(),:]
-        elif self.axis.get()==2:
-            plane = self.cube[:,:,self.plane_num.get()]
+        if self.axis.get() == 0:
+            plane = self.cube[self.plane_num.get(), :, :]
+        elif self.axis.get() == 1:
+            plane = self.cube[:, self.plane_num.get(), :]
+        elif self.axis.get() == 2:
+            plane = self.cube[:, :, self.plane_num.get()]
         nan_ratio = np.count_nonzero(np.isnan(plane)) / plane.size
-        self.localmax['text'] = "{}".format(np.format_float_scientific(np.nanmax(plane), 1))
-        self.localmin['text'] = "{}".format(np.format_float_scientific(np.nanmin(plane), 1))
-        self.localsum['text'] = "{}".format(np.format_float_scientific(np.nansum(plane), 1))
-        self.localnanratio['text'] = "{}".format(round(nan_ratio, 2))
+        self.localmax["text"] = "{}".format(
+            np.format_float_scientific(np.nanmax(plane), 1)
+        )
+        self.localmin["text"] = "{}".format(
+            np.format_float_scientific(np.nanmin(plane), 1)
+        )
+        self.localsum["text"] = "{}".format(
+            np.format_float_scientific(np.nansum(plane), 1)
+        )
+        self.localnanratio["text"] = "{}".format(round(nan_ratio, 2))
 
     def intensity_upd_global(self):
         """show global intensity minimum, maximum and sum of 3D array"""
         self.intensity_upd_local()
         nan_ratio = np.count_nonzero(np.isnan(self.cube)) / self.cube.size
-        self.globalmax['text'] = "{}".format(np.format_float_scientific(np.nanmax(self.cube), 1))
-        self.globalmin['text'] = "{}".format(np.format_float_scientific(np.nanmin(self.cube), 1))
-        self.globalsum['text'] = "{}".format(np.format_float_scientific(np.nansum(self.cube), 1))
-        self.globalnanratio['text'] = "{}".format(round(nan_ratio, 2))
-    
+        self.globalmax["text"] = "{}".format(
+            np.format_float_scientific(np.nanmax(self.cube), 1)
+        )
+        self.globalmin["text"] = "{}".format(
+            np.format_float_scientific(np.nanmin(self.cube), 1)
+        )
+        self.globalsum["text"] = "{}".format(
+            np.format_float_scientific(np.nansum(self.cube), 1)
+        )
+        self.globalnanratio["text"] = "{}".format(round(nan_ratio, 2))
+
     def fft(self):
         """
         Fourier transform 3D array from reciprocal to real space
         the origin of reciprocal and real space is expected to be the central voxel
         """
+
         def perform_fft(fftholder):
             time0 = time.time()
             fftholder = np.nan_to_num(fftholder)
@@ -339,7 +433,7 @@ class Gui(Frame):
             print("- FFT performed in {} sec.".format(round(fftdur, 4)))
             return fftholder
 
-        if not self.transformed and not self.transcutted: # no fft at all yet
+        if not self.transformed and not self.transcutted:  # no fft at all yet
             if not self.cutoff.get():
                 self.cube_reci = self.cube
                 self.cube = perform_fft(self.cube)
@@ -378,7 +472,7 @@ class Gui(Frame):
 
         self.plot_plane()
         self.intensity_upd_global()
-    
+
     def ifft(self):
         """
         Inverse Fourier transform 3D array from real to reciprocal space
@@ -392,7 +486,7 @@ class Gui(Frame):
             self.cube = self.cube_recicut
 
         print("- Switching to reciprocal space")
-        
+
         self.plot_plane()
         self.intensity_upd_global()
 
@@ -404,7 +498,7 @@ class Gui(Frame):
         currently opperates in units of pixels
         """
         if not self.cutted:
-            
+
             time0 = time.time()
             X, Y, Z = self.cube.shape
             sphere = np.ones((X, Y, Z))
@@ -424,7 +518,11 @@ class Gui(Frame):
                 self.cube_real = self.cube
                 self.cube = self.cube_reci * sphere
                 self.cube_recicut = self.cube
-                print("- Cutoff below {} and beyond {} in {} sec.".format(qmin, qmax, round(cutdur, 4)))
+                print(
+                    "- Cutoff below {} and beyond {} in {} sec.".format(
+                        qmin, qmax, round(cutdur, 4)
+                    )
+                )
                 self.fft()
             else:
                 self.cube_reci = self.cube
@@ -432,12 +530,16 @@ class Gui(Frame):
                 self.cube_recicut = self.cube
                 self.plot_plane()
                 self.intensity_upd_global()
-                print("- Cutoff below {} and beyond {} in {} sec.".format(qmin, qmax, round(cutdur, 4)))
+                print(
+                    "- Cutoff below {} and beyond {} in {} sec.".format(
+                        qmin, qmax, round(cutdur, 4)
+                    )
+                )
 
             self.cutted = True
 
         else:
-            if self.space.get(): # in real space
+            if self.space.get():  # in real space
                 self.cube = self.cube_realcut
             else:
                 self.cube = self.cube_recicut
@@ -445,7 +547,7 @@ class Gui(Frame):
             self.intensity_upd_global()
 
     def redocutuff(self):
-        if self.space.get(): # in real space
+        if self.space.get():  # in real space
             self.cube_realcut = self.cube
             if not self.transformed:
                 self.fft()
@@ -465,7 +567,7 @@ class Gui(Frame):
         self.cutted = False
         self.transcutted = False
         self.applycutoff()
-    
+
     def plot_next_plane(self):
         n = self.plane_num.get()
         if n == len(self.cube[self.axis.get()]) - 1:
@@ -474,10 +576,10 @@ class Gui(Frame):
             n += 1
         self.plane_num.set(n)
         self.plot_plane()
-    
+
     def animation(self):
         """
-        slices through the 3D array along the selcted axis 
+        slices through the 3D array along the selcted axis
         """
         try:
             if not self.anientry.get():
@@ -490,11 +592,11 @@ class Gui(Frame):
         while n is not self.plane_num.get():
             self.slider.after(anispeed, self.plot_next_plane())
         self.plot_next_plane()
-    
+
     def multiple_funcs(*funcs):
         for func in funcs:
-            func    
-    
+            func
+
 
 def main():
     root = Tk()
@@ -503,5 +605,5 @@ def main():
     root.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
