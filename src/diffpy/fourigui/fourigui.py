@@ -17,7 +17,6 @@ YPOS = 100
 
 
 class Gui(Frame):
-
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -506,8 +505,8 @@ class Gui(Frame):
             qmax = float(self.qmaxentry.get())
             # convert qmin to pixels
             # convert qmax to pixels
-            r2_inner = qmin**2
-            r2_outer = qmax**2
+            r2_inner = qmin ** 2
+            r2_outer = qmax ** 2
             XS, YS, ZS = np.meshgrid(np.arange(X), np.arange(Y), np.arange(Z))
             R2 = (XS - X // 2) ** 2 + (YS - Y // 2) ** 2 + (ZS - Z // 2) ** 2
             mask = (R2 <= r2_inner) | (R2 >= r2_outer)

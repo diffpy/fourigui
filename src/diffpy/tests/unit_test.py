@@ -4,7 +4,6 @@ from ..fourigui.fourigui import Gui
 
 
 class TestGui(unittest.TestCase):
-
     def setUp(self):
         # set up gui
         self.test_gui = Gui()
