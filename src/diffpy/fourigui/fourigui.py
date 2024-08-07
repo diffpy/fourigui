@@ -1,14 +1,18 @@
-from tkinter import *
-from tkinter.ttk import Button, Style
+import tkinter as tk
+from tkinter.ttk import Button
+
 import matplotlib
 
-matplotlib.use("TkAgg")
-from matplotlib import pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-import numpy as np
-import h5py
+matplotlib.use("tk.TkAgg")
 import time
 
+import h5py
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvastk.TkAgg,
+    NavigationToolbar2tk.Tk,
+)
 
 WIDTH = 920
 HEIGHT = 630
@@ -16,7 +20,7 @@ XPOS = 300
 YPOS = 100
 
 
-class Gui(Frame):
+class Gui(tk.Frame):
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -29,7 +33,7 @@ class Gui(Frame):
         self.transcutted = False  # denotes whether cutoff frequencies are applied and Fourier transformed
 
         self.master.title("FouriGUI")
-        self.pack(fill=BOTH, expand=True)
+        self.pack(fill=tk.BOTH, expand=True)
 
         print("\nNew Session started ...")
         print(
@@ -45,14 +49,14 @@ class Gui(Frame):
         ##### 00 #####
         # frame 00, upper left
 
-        frame00 = Frame(self)
+        frame00 = tk.Frame(self)
         frame00.place(x=5, y=0)
 
-        filelabel = Label(frame00, text="filename: ")
+        filelabel = tk.Label(frame00, text="filename: ")
         filelabel.grid(row=0, column=0)
 
         # row 0: load file area
-        self.filename_entry = Entry(frame00)
+        self.filename_entry = tk.Entry(frame00)
         self.filename_entry.grid(row=0, column=1, columnspan=3)
         self.filename_entry.insert(0, "/path/data.h5")
 
@@ -60,12 +64,12 @@ class Gui(Frame):
         loadbutton.grid(row=0, column=4)
 
         # row 1: change axis area
-        axislabel = Label(frame00, text="axis: ")
-        axislabel.grid(row=1, column=0, pady=7, sticky=W)
+        axislabel = tk.Label(frame00, text="axis: ")
+        axislabel.grid(row=1, column=0, pady=7, sticky=tk.W)
 
-        self.axis = IntVar()
+        self.axis = tk.IntVar()
 
-        rb0 = Radiobutton(
+        rb0 = tk.Radiobutton(
             frame00,
             text="0",
             variable=self.axis,
@@ -73,7 +77,7 @@ class Gui(Frame):
             command=lambda: self.plot_plane(),
         )
         rb0.grid(row=1, column=1)
-        rb1 = Radiobutton(
+        rb1 = tk.Radiobutton(
             frame00,
             text="1",
             variable=self.axis,
@@ -81,7 +85,7 @@ class Gui(Frame):
             command=lambda: self.plot_plane(),
         )
         rb1.grid(row=1, column=2)
-        rb2 = Radiobutton(
+        rb2 = tk.Radiobutton(
             frame00,
             text="2",
             variable=self.axis,
@@ -91,41 +95,41 @@ class Gui(Frame):
         rb2.grid(row=1, column=3)
 
         # row 2-4: intensity specs
-        intlabel = Label(frame00, text="intensity:")
-        intlabel.grid(row=2, column=0, pady=1, sticky=W)
-        maxintlabel = Label(frame00, text="max:")
-        maxintlabel.grid(row=3, column=0, pady=1, sticky=E)
-        minintlabel = Label(frame00, text="min:")
-        minintlabel.grid(row=4, column=0, pady=1, sticky=E)
-        sumintlabel = Label(frame00, text="sum:")
-        sumintlabel.grid(row=5, column=0, pady=1, sticky=E)
-        nanratiolabel = Label(frame00, text="nan ratio:")
-        nanratiolabel.grid(row=6, column=0, pady=1, sticky=E)
-        globallabel = Label(frame00, text="global", width=7)
+        intlabel = tk.Label(frame00, text="intensity:")
+        intlabel.grid(row=2, column=0, pady=1, sticky=tk.W)
+        maxintlabel = tk.Label(frame00, text="max:")
+        maxintlabel.grid(row=3, column=0, pady=1, sticky=tk.E)
+        minintlabel = tk.Label(frame00, text="min:")
+        minintlabel.grid(row=4, column=0, pady=1, sticky=tk.E)
+        sumintlabel = tk.Label(frame00, text="sum:")
+        sumintlabel.grid(row=5, column=0, pady=1, sticky=tk.E)
+        nanratiolabel = tk.Label(frame00, text="nan ratio:")
+        nanratiolabel.grid(row=6, column=0, pady=1, sticky=tk.E)
+        globallabel = tk.Label(frame00, text="global", width=7)
         globallabel.grid(row=2, column=1)
-        self.globalmax = Label(frame00, text="")
+        self.globalmax = tk.Label(frame00, text="")
         self.globalmax.grid(row=3, column=1)
-        self.globalmin = Label(frame00, text="")
+        self.globalmin = tk.Label(frame00, text="")
         self.globalmin.grid(row=4, column=1)
-        self.globalsum = Label(frame00, text="")
+        self.globalsum = tk.Label(frame00, text="")
         self.globalsum.grid(row=5, column=1)
-        self.globalnanratio = Label(frame00, text="")
+        self.globalnanratio = tk.Label(frame00, text="")
         self.globalnanratio.grid(row=6, column=1)
-        inplanelabel = Label(frame00, text="in plane", width=7)
+        inplanelabel = tk.Label(frame00, text="in plane", width=7)
         inplanelabel.grid(row=2, column=2)
-        self.localmax = Label(frame00, text="")
+        self.localmax = tk.Label(frame00, text="")
         self.localmax.grid(row=3, column=2)
-        self.localmin = Label(frame00, text="")
+        self.localmin = tk.Label(frame00, text="")
         self.localmin.grid(row=4, column=2)
-        self.localsum = Label(frame00, text="")
+        self.localsum = tk.Label(frame00, text="")
         self.localsum.grid(row=5, column=2)
-        self.localnanratio = Label(frame00, text="")
+        self.localnanratio = tk.Label(frame00, text="")
         self.localnanratio.grid(row=6, column=2)
-        colorbarlabel = Label(frame00, text="colorbar")
+        colorbarlabel = tk.Label(frame00, text="colorbar")
         colorbarlabel.grid(row=2, column=3)
-        self.colorbarmax = Entry(frame00, width=7)
+        self.colorbarmax = tk.Entry(frame00, width=7)
         self.colorbarmax.grid(row=3, column=3)
-        self.colorbarmin = Entry(frame00, width=7)
+        self.colorbarmin = tk.Entry(frame00, width=7)
         self.colorbarmin.grid(row=4, column=3)
         set_range = Button(
             frame00, text="set range", command=lambda: self.colorrange_upd()
@@ -151,54 +155,54 @@ class Gui(Frame):
         toglobalmin.grid(row=4, column=4)
 
         # row 7-8: animation - automatic slicing through the planes
-        anilabel = Label(frame00, text="animation speed [ms]")
-        anilabel.grid(row=7, column=3, columnspan=2, sticky=W)
-        self.anientry = Entry(frame00, width=7)
+        anilabel = tk.Label(frame00, text="animation speed [ms]")
+        anilabel.grid(row=7, column=3, columnspan=2, sticky=tk.W)
+        self.anientry = tk.Entry(frame00, width=7)
         self.anientry.grid(row=8, column=3)
         anibutton = Button(frame00, text="animation", command=lambda: self.animation())
         anibutton.grid(row=8, column=4)
 
         # row 10-12 Fourier transformation
-        seperator = Label(
+        seperator = tk.Label(
             frame00, text=" "
         )  # __________________________________________________________________")
         seperator.grid(row=9, column=0, columnspan=5)
-        cutofflabel = Label(frame00, text="cutoff frequency")
+        cutofflabel = tk.Label(frame00, text="cutoff frequency")
         cutofflabel.grid(row=10, column=2, columnspan=2)
-        qminlabel = Label(frame00, text="qmin [px]:")
-        qminlabel.grid(row=11, column=2, sticky=E)
-        qmaxlabel = Label(frame00, text="qmax [px]:")
-        qmaxlabel.grid(row=12, column=2, sticky=E)
-        self.qminentry = Entry(frame00, width=7)
+        qminlabel = tk.Label(frame00, text="qmin [px]:")
+        qminlabel.grid(row=11, column=2, sticky=tk.E)
+        qmaxlabel = tk.Label(frame00, text="qmax [px]:")
+        qmaxlabel.grid(row=12, column=2, sticky=tk.E)
+        self.qminentry = tk.Entry(frame00, width=7)
         self.qminentry.grid(row=11, column=3)
-        self.qmaxentry = Entry(frame00, width=7)
+        self.qmaxentry = tk.Entry(frame00, width=7)
         self.qmaxentry.grid(row=12, column=3)
-        self.cutoff = IntVar()
+        self.cutoff = tk.IntVar()
         newcutoffbutton = Button(
             frame00, text="new cutoff", command=lambda: self.newcutoff()
         )
         newcutoffbutton.grid(row=10, column=4)
-        cutoffon = Radiobutton(
+        cutoffon = tk.Radiobutton(
             frame00,
             text="on",
             variable=self.cutoff,
             value=1,
             command=lambda: self.applycutoff(),
         )
-        cutoffon.grid(row=11, column=4, sticky=W)
-        cutoffoff = Radiobutton(
+        cutoffon.grid(row=11, column=4, sticky=tk.W)
+        cutoffoff = tk.Radiobutton(
             frame00,
             text="off",
             variable=self.cutoff,
             value=0,
             command=lambda: self.redocutuff(),
         )
-        cutoffoff.grid(row=12, column=4, sticky=W)
+        cutoffoff.grid(row=12, column=4, sticky=tk.W)
 
-        spacelabel = Label(frame00, text="Space Selection")
-        spacelabel.grid(row=10, column=0, columnspan=2, sticky=W)
-        self.space = IntVar()
-        reciprocal = Radiobutton(
+        spacelabel = tk.Label(frame00, text="Space Selection")
+        spacelabel.grid(row=10, column=0, columnspan=2, sticky=tk.W)
+        self.space = tk.IntVar()
+        reciprocal = tk.Radiobutton(
             frame00,
             text="reciprocal space",
             variable=self.space,
@@ -206,49 +210,49 @@ class Gui(Frame):
             command=lambda: self.ifft(),
             pady=5,
         )
-        reciprocal.grid(row=11, column=0, columnspan=2, sticky=W)
-        fft = Radiobutton(
+        reciprocal.grid(row=11, column=0, columnspan=2, sticky=tk.W)
+        fft = tk.Radiobutton(
             frame00,
             text="real space",
             variable=self.space,
             value=1,
             command=lambda: self.fft(),
         )
-        fft.grid(row=12, column=0, columnspan=2, sticky=W)
+        fft.grid(row=12, column=0, columnspan=2, sticky=tk.W)
 
         ##### 01 #####
         # frame 01, upper right
-        self.frame01 = Frame(self, bg="#cccccc")
+        self.frame01 = tk.Frame(self, bg="#cccccc")
         self.frame01.place(x=400, y=0)  # , height=HEIGHT//2, width=WIDTH//2)
 
-        self.plane_num = IntVar()
+        self.plane_num = tk.IntVar()
 
-        self.slider = Scale(
+        self.slider = tk.Scale(
             self.frame01,
             variable=self.plane_num,
             from_=0,
             to=500,
             label="slider",
-            orient=HORIZONTAL,
+            orient=tk.HORIZONTAL,
             length=WIDTH // 2,  # resolution=-1,
             command=lambda l: self.multiple_funcs(
                 self.plot_plane(), self.intensity_upd_local()
             ),
         )
         # command=lambda p: self.plot_plane())
-        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=N + E + S + W)
+        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W)
 
-        self.frame01_plotcell = Frame(self.frame01)
+        self.frame01_plotcell = tk.Frame(self.frame01)
         self.frame01_plotcell.grid(
-            row=1, column=0, padx=10, pady=10, sticky=N + E + S + W
+            row=1, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W
         )
 
-        self.frame01_toolbar = Frame(self.frame01)
+        self.frame01_toolbar = tk.Frame(self.frame01)
         self.frame01_toolbar.grid(row=2, column=0)
 
         ##### 10 #####
         # frame 10, lower left
-        frame10 = Frame(self)
+        frame10 = tk.Frame(self)
         frame10.place(x=5, y=HEIGHT - 30)  # , height=HEIGHT//2, width=WIDTH//2)
         quit = Button(
             frame10,
@@ -257,12 +261,12 @@ class Gui(Frame):
                 print("Session ended...\n", self.quit())
             ),
         )
-        quit.pack(side=TOP)
+        quit.pack(side=tk.TOP)
 
         ##### 11 #####
         # frame 00, lower right
         # no functionality
-        frame11 = Frame(self)
+        frame11 = tk.Frame(self)
         frame11.place(
             x=WIDTH // 2, y=HEIGHT // 2
         )  # , height=HEIGHT//2, width=WIDTH//2)
@@ -292,19 +296,19 @@ class Gui(Frame):
         print("- file loaded: {}".format(filename))
 
         self.slider.destroy()
-        self.slider = Scale(
+        self.slider = tk.Scale(
             self.frame01,
             variable=self.plane_num,
             from_=0,
             to=len(self.cube) - 1,
             label="slider",
-            orient=HORIZONTAL,
+            orient=tk.HORIZONTAL,
             length=WIDTH // 2,  # resolution=-1,
             command=lambda l: self.multiple_funcs(
                 self.plot_plane(), self.intensity_upd_local()
             ),
         )
-        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=N + E + S + W)
+        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W)
 
         if not self.loaded:
 
@@ -327,14 +331,14 @@ class Gui(Frame):
             plt.colorbar(shrink=0.81)
             ax.set_xlabel("pixel")
             ax.set_ylabel("pixel")
-            self.canvas = FigureCanvasTkAgg(fig, master=self.frame01_plotcell)
-            self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame01_toolbar)
-            self.toolbar.pack(side=LEFT)
+            self.canvas = FigureCanvastk.TkAgg(fig, master=self.frame01_plotcell)
+            self.toolbar = tk.NavigationToolbar2tk.Tk(self.canvas, self.frame01_toolbar)
+            self.toolbar.pack(side=tk.LEFT)
             # self.toolbar.children['!button6'].pack_forget()
             # self.toolbar.children['!button7'].pack_forget()
             self.toolbar.update()
             self.canvas.draw()
-            self.canvas.get_tk_widget().pack(side=LEFT, fill=BOTH, expand=1)
+            self.canvas.get_tk_widget().pack(side=tk.LEFT, fill=tk.BOTH, expand=1)
             self.loaded = True
 
         else:
@@ -505,8 +509,8 @@ class Gui(Frame):
             qmax = float(self.qmaxentry.get())
             # convert qmin to pixels
             # convert qmax to pixels
-            r2_inner = qmin ** 2
-            r2_outer = qmax ** 2
+            r2_inner = qmin**2
+            r2_outer = qmax**2
             XS, YS, ZS = np.meshgrid(np.arange(X), np.arange(Y), np.arange(Z))
             R2 = (XS - X // 2) ** 2 + (YS - Y // 2) ** 2 + (ZS - Z // 2) ** 2
             mask = (R2 <= r2_inner) | (R2 >= r2_outer)
@@ -598,7 +602,7 @@ class Gui(Frame):
 
 
 def main():
-    root = Tk()
+    root = tk.Tk()
     root.geometry("{}x{}+{}+{}".format(WIDTH, HEIGHT, XPOS, YPOS))
     Gui()
     root.mainloop()
