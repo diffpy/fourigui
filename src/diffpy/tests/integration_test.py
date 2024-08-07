@@ -1,6 +1,8 @@
 import unittest
-import numpy as np
+
 import h5py
+import numpy as np
+
 from ..fourigui.fourigui import Gui
 
 

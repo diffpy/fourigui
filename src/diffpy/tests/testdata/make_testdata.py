@@ -1,5 +1,5 @@
-import numpy as np
 import h5py
+import numpy as np
 
 
 def cutcube(fname_uncut_cube, fname_cut_cube, qmin, qmax):
@@ -8,8 +8,8 @@ def cutcube(fname_uncut_cube, fname_cut_cube, qmin, qmax):
 
     X, Y, Z = cube.shape
     sphere = np.ones((X, Y, Z))
-    r2_inner = qmin ** 2
-    r2_outer = qmax ** 2
+    r2_inner = qmin**2
+    r2_outer = qmax**2
     XS, YS, ZS = np.meshgrid(np.arange(X), np.arange(Y), np.arange(Z))
     R2 = (XS - X // 2) ** 2 + (YS - Y // 2) ** 2 + (ZS - Z // 2) ** 2
     mask = (R2 <= r2_inner) | (R2 >= r2_outer)
