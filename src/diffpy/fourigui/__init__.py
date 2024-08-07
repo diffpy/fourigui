@@ -16,7 +16,3 @@
 """\
 '{{cookiecutter.short_description}}'
 """
-# package version
-from diffpy.fourigui.version import __version__
-
-from diffpy.fourigui.fourigui import main
