@@ -98,4 +98,3 @@ For more information on diffpy.structure please visit the project web-page
 http://www.diffpy.org/
 
 or email Prof. Simon Billinge at sb2896@columbia.edu.
-
