@@ -1,18 +1,14 @@
+import time
 import tkinter as tk
 from tkinter.ttk import Button
 
-import matplotlib
-
-matplotlib.use("tk.TkAgg")
-import time
-
 import h5py
+import matplotlib
 import numpy as np
 from matplotlib import pyplot as plt
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvastk.TkAgg,
-    NavigationToolbar2tk.Tk,
-)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+
+matplotlib.use("tk.TkAgg")
 
 WIDTH = 920
 HEIGHT = 630
@@ -46,7 +42,7 @@ class Gui(tk.Frame):
         # frame 10: exit button
         # frame 11: not used
 
-        ##### 00 #####
+        # 00 #
         # frame 00, upper left
 
         frame00 = tk.Frame(self)
@@ -220,7 +216,7 @@ class Gui(tk.Frame):
         )
         fft.grid(row=12, column=0, columnspan=2, sticky=tk.W)
 
-        ##### 01 #####
+        # 01 #
         # frame 01, upper right
         self.frame01 = tk.Frame(self, bg="#cccccc")
         self.frame01.place(x=400, y=0)  # , height=HEIGHT//2, width=WIDTH//2)
@@ -235,12 +231,14 @@ class Gui(tk.Frame):
             label="slider",
             orient=tk.HORIZONTAL,
             length=WIDTH // 2,  # resolution=-1,
-            command=lambda l: self.multiple_funcs(
+            command=lambda x: self.multiple_funcs(
                 self.plot_plane(), self.intensity_upd_local()
             ),
         )
         # command=lambda p: self.plot_plane())
-        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W)
+        self.slider.grid(
+            row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W
+        )
 
         self.frame01_plotcell = tk.Frame(self.frame01)
         self.frame01_plotcell.grid(
@@ -250,7 +248,7 @@ class Gui(tk.Frame):
         self.frame01_toolbar = tk.Frame(self.frame01)
         self.frame01_toolbar.grid(row=2, column=0)
 
-        ##### 10 #####
+        # 10 #
         # frame 10, lower left
         frame10 = tk.Frame(self)
         frame10.place(x=5, y=HEIGHT - 30)  # , height=HEIGHT//2, width=WIDTH//2)
@@ -263,7 +261,7 @@ class Gui(tk.Frame):
         )
         quit.pack(side=tk.TOP)
 
-        ##### 11 #####
+        # 11 #
         # frame 00, lower right
         # no functionality
         frame11 = tk.Frame(self)
@@ -285,7 +283,7 @@ class Gui(tk.Frame):
                 self.cube = np.array(f["data"])
             elif "rebinned_data" in f.keys():
                 self.cube = np.array(f["rebinned_data"])
-        except:
+        except Exception:
             raise KeyError(
                 "- No data found in "
                 + filename
@@ -304,11 +302,13 @@ class Gui(tk.Frame):
             label="slider",
             orient=tk.HORIZONTAL,
             length=WIDTH // 2,  # resolution=-1,
-            command=lambda l: self.multiple_funcs(
+            command=lambda x: self.multiple_funcs(
                 self.plot_plane(), self.intensity_upd_local()
             ),
         )
-        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W)
+        self.slider.grid(
+            row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W
+        )
 
         if not self.loaded:
 
@@ -327,12 +327,11 @@ class Gui(tk.Frame):
                 self.im = plt.imshow(self.cube[:, :, self.plane_num.get()])
             else:
                 raise ValueError("axis must be 0,1,2")
-            axs = plt.gca()
             plt.colorbar(shrink=0.81)
             ax.set_xlabel("pixel")
             ax.set_ylabel("pixel")
-            self.canvas = FigureCanvastk.TkAgg(fig, master=self.frame01_plotcell)
-            self.toolbar = tk.NavigationToolbar2tk.Tk(self.canvas, self.frame01_toolbar)
+            self.canvas = FigureCanvasTkAgg(fig, master=self.frame01_plotcell)
+            self.toolbar = NavigationToolbar2Tk(self.canvas, self.frame01_toolbar)
             self.toolbar.pack(side=tk.LEFT)
             # self.toolbar.children['!button6'].pack_forget()
             # self.toolbar.children['!button7'].pack_forget()
