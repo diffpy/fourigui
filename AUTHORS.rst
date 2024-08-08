@@ -1,8 +1,5 @@
 Authors
 =======
-
-Billinge Group and community contibutors.
-
 The main contributors to the diffpy.fourigui software is:
 
     Sani Harouna-Mayer
@@ -27,6 +24,7 @@ Credits
 
 Contributors
 ------------
+Billinge Group and community contibutors.
 
-For a list of contributors, visit
+For an exact list of contributors, visit
 https://github.com/diffpy/fourigui/graphs/contributors
