@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 ##############################################################################
 #
-# diffpy.fourigui   by DANSE Diffraction group
-#                   Simon J. L. Billinge
-#                   (c) 2008 Trustees of the Columbia University
-#                   in the City of New York.  All rights reserved.
+# (c) 2024 The Trustees of Columbia University in the City of New York.
+# All rights reserved.
 #
-# File coded by:    Sani Harouna-Mayer
+# File coded by: Billinge Group members and community contributors.
 #
-# See AUTHORS.txt for a list of people who contributed.
-# See LICENSENOTICE.txt for license information.
+# See GitHub contributions for a more detailed list of contributors.
+# https://github.com/diffpy/fourigui/graphs/contributors
+#
+# See LICENSE.rst for license information.
 #
 ##############################################################################
-# TODO add description
-"""\
-'{{cookiecutter.short_description}}'
-"""
+
+"""Tool for visualizing 3D diffraction and PDF Images"""
+
+# package version
+from diffpy.fourigui.version import __version__
+
+# silence the pyflakes syntax checker
+assert __version__ or True
+
+# End of file
