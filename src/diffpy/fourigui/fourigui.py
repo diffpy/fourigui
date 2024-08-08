@@ -32,9 +32,7 @@ class Gui(tk.Frame):
         self.pack(fill=tk.BOTH, expand=True)
 
         print("\nNew Session started ...")
-        print(
-            "Enjoy exploring the beautiful reconstructions in real and in reciprocal space!"
-        )
+        print("Enjoy exploring the beautiful reconstructions in real and in reciprocal space!")
 
         # 4 frames:
         # frame 00: all buttons
@@ -127,9 +125,7 @@ class Gui(tk.Frame):
         self.colorbarmax.grid(row=3, column=3)
         self.colorbarmin = tk.Entry(frame00, width=7)
         self.colorbarmin.grid(row=4, column=3)
-        set_range = Button(
-            frame00, text="set range", command=lambda: self.colorrange_upd()
-        )
+        set_range = Button(frame00, text="set range", command=lambda: self.colorrange_upd())
         set_range.grid(row=2, column=4)
         toglobalmax = Button(
             frame00,
@@ -174,9 +170,7 @@ class Gui(tk.Frame):
         self.qmaxentry = tk.Entry(frame00, width=7)
         self.qmaxentry.grid(row=12, column=3)
         self.cutoff = tk.IntVar()
-        newcutoffbutton = Button(
-            frame00, text="new cutoff", command=lambda: self.newcutoff()
-        )
+        newcutoffbutton = Button(frame00, text="new cutoff", command=lambda: self.newcutoff())
         newcutoffbutton.grid(row=10, column=4)
         cutoffon = tk.Radiobutton(
             frame00,
@@ -231,19 +225,13 @@ class Gui(tk.Frame):
             label="slider",
             orient=tk.HORIZONTAL,
             length=WIDTH // 2,  # resolution=-1,
-            command=lambda x: self.multiple_funcs(
-                self.plot_plane(), self.intensity_upd_local()
-            ),
+            command=lambda x: self.multiple_funcs(self.plot_plane(), self.intensity_upd_local()),
         )
         # command=lambda p: self.plot_plane())
-        self.slider.grid(
-            row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W
-        )
+        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W)
 
         self.frame01_plotcell = tk.Frame(self.frame01)
-        self.frame01_plotcell.grid(
-            row=1, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W
-        )
+        self.frame01_plotcell.grid(row=1, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W)
 
         self.frame01_toolbar = tk.Frame(self.frame01)
         self.frame01_toolbar.grid(row=2, column=0)
@@ -255,9 +243,7 @@ class Gui(tk.Frame):
         quit = Button(
             frame10,
             text="exit",
-            command=lambda: self.multiple_funcs(
-                print("Session ended...\n", self.quit())
-            ),
+            command=lambda: self.multiple_funcs(print("Session ended...\n", self.quit())),
         )
         quit.pack(side=tk.TOP)
 
@@ -265,9 +251,7 @@ class Gui(tk.Frame):
         # frame 00, lower right
         # no functionality
         frame11 = tk.Frame(self)
-        frame11.place(
-            x=WIDTH // 2, y=HEIGHT // 2
-        )  # , height=HEIGHT//2, width=WIDTH//2)
+        frame11.place(x=WIDTH // 2, y=HEIGHT // 2)  # , height=HEIGHT//2, width=WIDTH//2)
 
     def load_cube(self):
         """
@@ -302,13 +286,9 @@ class Gui(tk.Frame):
             label="slider",
             orient=tk.HORIZONTAL,
             length=WIDTH // 2,  # resolution=-1,
-            command=lambda x: self.multiple_funcs(
-                self.plot_plane(), self.intensity_upd_local()
-            ),
+            command=lambda x: self.multiple_funcs(self.plot_plane(), self.intensity_upd_local()),
         )
-        self.slider.grid(
-            row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W
-        )
+        self.slider.grid(row=0, column=0, padx=10, pady=10, sticky=tk.N + tk.E + tk.S + tk.W)
 
         if not self.loaded:
 
@@ -391,30 +371,18 @@ class Gui(tk.Frame):
         elif self.axis.get() == 2:
             plane = self.cube[:, :, self.plane_num.get()]
         nan_ratio = np.count_nonzero(np.isnan(plane)) / plane.size
-        self.localmax["text"] = "{}".format(
-            np.format_float_scientific(np.nanmax(plane), 1)
-        )
-        self.localmin["text"] = "{}".format(
-            np.format_float_scientific(np.nanmin(plane), 1)
-        )
-        self.localsum["text"] = "{}".format(
-            np.format_float_scientific(np.nansum(plane), 1)
-        )
+        self.localmax["text"] = "{}".format(np.format_float_scientific(np.nanmax(plane), 1))
+        self.localmin["text"] = "{}".format(np.format_float_scientific(np.nanmin(plane), 1))
+        self.localsum["text"] = "{}".format(np.format_float_scientific(np.nansum(plane), 1))
         self.localnanratio["text"] = "{}".format(round(nan_ratio, 2))
 
     def intensity_upd_global(self):
         """show global intensity minimum, maximum and sum of 3D array"""
         self.intensity_upd_local()
         nan_ratio = np.count_nonzero(np.isnan(self.cube)) / self.cube.size
-        self.globalmax["text"] = "{}".format(
-            np.format_float_scientific(np.nanmax(self.cube), 1)
-        )
-        self.globalmin["text"] = "{}".format(
-            np.format_float_scientific(np.nanmin(self.cube), 1)
-        )
-        self.globalsum["text"] = "{}".format(
-            np.format_float_scientific(np.nansum(self.cube), 1)
-        )
+        self.globalmax["text"] = "{}".format(np.format_float_scientific(np.nanmax(self.cube), 1))
+        self.globalmin["text"] = "{}".format(np.format_float_scientific(np.nanmin(self.cube), 1))
+        self.globalsum["text"] = "{}".format(np.format_float_scientific(np.nansum(self.cube), 1))
         self.globalnanratio["text"] = "{}".format(round(nan_ratio, 2))
 
     def fft(self):
@@ -520,11 +488,7 @@ class Gui(tk.Frame):
                 self.cube_real = self.cube
                 self.cube = self.cube_reci * sphere
                 self.cube_recicut = self.cube
-                print(
-                    "- Cutoff below {} and beyond {} in {} sec.".format(
-                        qmin, qmax, round(cutdur, 4)
-                    )
-                )
+                print("- Cutoff below {} and beyond {} in {} sec.".format(qmin, qmax, round(cutdur, 4)))
                 self.fft()
             else:
                 self.cube_reci = self.cube
@@ -532,11 +496,7 @@ class Gui(tk.Frame):
                 self.cube_recicut = self.cube
                 self.plot_plane()
                 self.intensity_upd_global()
-                print(
-                    "- Cutoff below {} and beyond {} in {} sec.".format(
-                        qmin, qmax, round(cutdur, 4)
-                    )
-                )
+                print("- Cutoff below {} and beyond {} in {} sec.".format(qmin, qmax, round(cutdur, 4)))
 
             self.cutted = True
 
