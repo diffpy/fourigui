@@ -31,7 +31,10 @@ if __name__ == "__main__":
     import diffpy.fourigui.tests.unit_test as unit_test
 
     # produce zero exit code for a successful test
-    sys.exit((not integration_test.main().wasSuccessful()) or (not unit_test.main().wasSuccessful()))
+    sys.exit(
+        (not integration_test.main().wasSuccessful())
+        or (not unit_test.main().wasSuccessful())
+    )
 
 
 # Consider upgrading to pytest
