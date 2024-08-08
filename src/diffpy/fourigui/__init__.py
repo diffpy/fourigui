@@ -1,18 +1,9 @@
-#!/usr/bin/env python
-##############################################################################
-#
-# diffpy.fourigui   by DANSE Diffraction group
-#                   Simon J. L. Billinge
-#                   (c) 2008 Trustees of the Columbia University
-#                   in the City of New York.  All rights reserved.
-#
-# File coded by:    Sani Harouna-Mayer
-#
-# See AUTHORS.txt for a list of people who contributed.
-# See LICENSENOTICE.txt for license information.
-#
-##############################################################################
-# TODO add description
-"""\
-'{{cookiecutter.short_description}}'
-"""
+"""Tool for visualizing 3D diffraction and PDF Images"""
+
+# from . import fourigui
+from .version import __version__
+
+# silence the pyflakes syntax checker
+assert __version__ or True
+
+# End of file
