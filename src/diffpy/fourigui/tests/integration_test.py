@@ -3,7 +3,7 @@ import unittest
 import h5py
 import numpy as np
 
-from diffpy.fourigui.fourigui import Gui
+from src.diffpy.fourigui.fourigui import Gui
 
 
 class TestGui(unittest.TestCase):

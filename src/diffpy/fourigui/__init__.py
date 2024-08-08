@@ -15,7 +15,7 @@
 
 """Tool for visualizing 3D diffraction and PDF Images"""
 
-from . import fourigui
+# from . import fourigui
 from .version import __version__
 
 # silence the pyflakes syntax checker
