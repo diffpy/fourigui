@@ -58,7 +58,7 @@ test:
 about:
   home: https://github.com/diffpy/diffpy.fourigui
   #TODO add short description
-  summary: 
+  summary:
   license: Modified BSD License
   license_file: LICENSE.txt
 

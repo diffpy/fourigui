@@ -7,14 +7,14 @@ diffpy.fourigui - graphical interface for interfacing with 3D diffraction patter
 in reciprocal space
 
 Packages:   diffpy.fourigui
-Scripts:    fourgui - 
+Scripts:    fourgui -
 """
 
-import sys
 import os
 import re
-from setuptools import setup, find_packages
+import sys
 
+from setuptools import find_packages, setup
 
 # Use this version when git data are not available, like in git zip archive.
 # Update when tagging a new release.
@@ -31,7 +31,7 @@ PY3 = sys.version_info[0] == 3
 
 
 def gitinfo():
-    from subprocess import Popen, PIPE
+    from subprocess import PIPE, Popen
 
     kw = dict(stdout=PIPE, cwd=MYDIR, universal_newlines=True)
     proc = Popen(["git", "describe", "--match=v[[:digit:]]*"], **kw)
@@ -90,8 +90,11 @@ with open(os.path.join(MYDIR, "README.rst")) as fp:
     long_description = fp.read()
 
 
+def dest(p):
+    return os.path.normpath(p.replace("_build", ""))
+
+
 def datafiles_html():
-    dest = lambda p: os.path.normpath(p.replace("_build", ""))
     rv = [
         (dest(t), [os.path.join(t, f) for f in fl])
         for t, d, fl in os.walk("doc/manual/_build/html")

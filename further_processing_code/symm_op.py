@@ -11,10 +11,11 @@
 # for different cubic structures one can easily change the symmetry operation parameters in line 106
 # more complex textures or crystal strucutes require more effort to derive appropriate symmetry operations
 
-import numpy as np
-import h5py
-from scipy.ndimage import rotate
 from time import time
+
+import h5py
+import numpy as np
+from scipy.ndimage import rotate
 
 
 def load_data(fname):
@@ -37,10 +38,11 @@ def save_data(fname, arr):
 
 def symm_op(arr, angle, inversion):
     """
-    Perform symmetry operations on data set "arr". arr will be inverted about the center voxel and rotated with "angle"
-    about the z axis by iterating the 2D planes in the 3D data set arr along the z axis. rotation of the planes in the
-    data set is perfomed by scipy.ndimage.rotate. arr might contain nan values which scipy.ndimage.rotate cannot
-    operate. therefore the nan values in arr will be converted to float values 0.0 and denoted by 3D array "isnanarr_so".
+    Perform symmetry operations on data set "arr". arr will be inverted about the center voxel and rotated with
+    "angle" about the z axis by iterating the 2D planes in the 3D data set arr along the z axis. rotation of the
+    planes in the data set is perfomed by scipy.ndimage.rotate. arr might contain nan values which
+    scipy.ndimage.rotate cannot operate. therefore the nan values in arr will be converted to float values 0.0 and
+    denoted by 3D array "isnanarr_so".
     :param arr: data set in h5 type
     :param angle: rotate arr angle degrees about the z axis. put False if no rotation is intended.
     :param inversion: Boolian variable if arr is supposed to be inverted about center voxel.
@@ -107,8 +109,8 @@ def main(arr, symm_op_params):
     """
     Perform symmertry operations specified in symm_op_params and bin together the symmetry operated data sets.
     :param arr: data set in h5 type
-    :param symm_op_params: list of tuples with the supposed angle for the rotation in degree and False if no rotation
-    is intended and True or False if data set should be inverted or not.
+    :param symm_op_params: list of tuples with the supposed angle for the rotation in degree and False if no
+    rotation is intended and True or False if data set should be inverted or not.
     :return arr: average of all symmetry operated data sets
     """
     holder = np.zeros_like(arr)
