@@ -9,8 +9,7 @@ recursive-exclude * *.py[co]
 
 recursive-include docs *.rst conf.py Makefile make.bat
 
-include versioneer.py
-include fourigui/_version.py
+include diffpy.fourigui/version.py
 
 # If including data files in the package, add them like:
 # include path/to/data_file

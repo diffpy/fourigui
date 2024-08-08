@@ -61,9 +61,7 @@ def symm_op(arr, angle, inversion):
         isnanarr_so = []
         arr_so = []
         isnanarr = np.isnan(arr)
-        arr = np.nan_to_num(
-            arr
-        )  # scipy.ndimage.rotate cannot operate nan values, thus reasign nan to 0.0
+        arr = np.nan_to_num(arr)  # scipy.ndimage.rotate cannot operate nan values, thus reasign nan to 0.0
 
         for plane in isnanarr:
             isnanarr_so.append(
@@ -94,9 +92,7 @@ def symm_op(arr, angle, inversion):
             )
 
         isnanarr_so = np.rot90(isnanarr_so, k=-1, axes=(0, 2))
-        arr_so = np.rot90(
-            arr_so, k=-1, axes=(0, 2)
-        )  # rotate arr -90° about axes (0,2) to initial orientation
+        arr_so = np.rot90(arr_so, k=-1, axes=(0, 2))  # rotate arr -90° about axes (0,2) to initial orientation
 
     else:
         isnanarr_so = np.isnan(arr)
