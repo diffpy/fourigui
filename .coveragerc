@@ -1,6 +1,6 @@
 [run]
 source =
-    fourigui
+    diffpy.fourigui
 [report]
 omit =
     */python?.?/*
