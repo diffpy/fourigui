@@ -1,7 +1,11 @@
+Authors
+=======
 
 The main contributors to the diffpy.fourigui software is:
 
     Sani Harouna-Mayer
+
+Billinge Group and community contributors.
 
 This project was much improved by testing, feedback and suggestions
 from the Billinge-group members at the Applied Physics and Applied
@@ -11,23 +15,16 @@ at the Brookhaven National Laboratory.
 
 For more information about diffpy.fourigui email sb2896@columbia.edu.
 
-
-=======
 Credits
+=======
 
 - Zach Thatcher
 - Connor Bracy
 - Silvio Achilles
 - Ludwig Hendl
 
-=======
-
-Maintainer
-----------
-
-* diffpy <sb2896@columbia.edu>
-
 Contributors
 ------------
 
-None yet. Why not be the first? See: CONTRIBUTING.rst
+For a list of contributors, visit
+https://github.com/{{ cookiecutter.github_org }}/{{ cookiecutter.repo_name }}/graphs/contributors
